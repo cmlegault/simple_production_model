@@ -38,12 +38,11 @@ Type objective_function<Type>::operator() ()
   for(int y=1; y<nY; y++){
     pred_Y(y-1) = TMB_B(y-1) * TMB_F(y-1);
 	pred_B(y) = TMB_B(y-1) + TMB_r * TMB_B(y-1) * (1.0 - TMB_B(y-1) / TMB_K) - pred_Y(y-1);
-	//pred_B(y) = (TMB_B(y-1)-pred_Y(y-1)) * (1.0 + TMB_r*(1.0-(TMB_B(y-1)-pred_Y(y-1))/TMB_K)); // Thorson's equation
   }
 	
   // process error in B
   for(int y=1; y<nY; y++){
-    ans -= dnorm(TMB_B(y), pred_B(y), sigmaB1, true); 
+    ans -= dnorm(log(TMB_B(y)), log(pred_B(y)), sigmaB1, true); 
   }
   
   // random walk in F
